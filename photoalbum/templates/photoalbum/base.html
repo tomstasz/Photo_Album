@@ -6,13 +6,19 @@
 </head>
 <body>
 <header>
+    Dzisiaj jest: {{ date|date:'d.m.Y'}}
     <h1>Photo Album</h1>
 </header>
 {% block content %}
 
 {% endblock %}
 <footer>
-
+ {% if request.user.is_authenticated %}
+        Witaj {{ request.user.username }} <a href="{% url 'logout' %}">Wyloguj</a>
+        {% else %}
+            <a href="{% url 'login' %}">Zaloguj</a>
+            <a href="{% url 'register' %}">Zarejestruj się</a>
+        {% endif %}
 </footer>
 </body>
 </html>
