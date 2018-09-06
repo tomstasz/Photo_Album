@@ -4,10 +4,10 @@ from django.shortcuts import render, redirect
 from django.template.response import TemplateResponse
 from django.views import View
 from django.views.generic import CreateView
-from photoalbum.forms import LoginForm
+from photoalbum.forms import LoginForm, AddUserForm
 from django.contrib.auth import login, authenticate, logout
 from django.urls import reverse_lazy
-from photoalbum.models import User
+from .models import User
 
 
 class IndexView(View):
@@ -33,7 +33,7 @@ class LoginView(View):
                 login(request, user)
                 return redirect('index')
             else:
-                ctx.update({'message': 'Nie ma takiego użytkownika'})
+                ctx.update({'message': 'Błąd loginu lub hasła'})
         return TemplateResponse(request, 'photoalbum/login.html', ctx)
 
 
@@ -44,9 +44,20 @@ class LogoutView(View):
         return redirect('index')
 
 
-class UserCreateView(CreateView):
-    model = User
-    # fields = ['username', 'password', 'first_name', 'last_name', 'email']
-    fields = '__all__'
-    template_name = 'photoalbum/user_form.html'
-    success_url = reverse_lazy('index')
+class AddUserView(View):
+
+    def get(self, request):
+        form = AddUserForm()
+        return TemplateResponse(request, 'photoalbum/user_form.html', {'form': form})
+
+    def post(self, request):
+        form = AddUserForm(request.POST)
+        ctx = {'form': form}
+        if form.is_valid():
+            email = form.cleaned_data['login']
+            password = form.cleaned_data['password']
+            new_user = User.objects.create_user(username=email, email=email, password=password)
+            login(request, new_user)
+            return redirect('index')
+        return TemplateResponse(request, 'photoalbum/user_form.html', ctx)
+
