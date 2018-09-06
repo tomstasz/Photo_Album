@@ -19,3 +19,9 @@ class AddUserForm(forms.Form):
         if self.cleaned_data['password'] != self.cleaned_data['password_repeat']:
             raise ValidationError('Niepoprawne hasło')
 
+
+class PhotoCreateForm(forms.ModelForm):
+    class Meta:
+        model = Photo
+        exclude = ['creation_date']
+        widgets = {'user': forms.HiddenInput}

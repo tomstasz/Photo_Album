@@ -4,10 +4,10 @@ from django.shortcuts import render, redirect
 from django.template.response import TemplateResponse
 from django.views import View
 from django.views.generic import CreateView
-from photoalbum.forms import LoginForm, AddUserForm
+from photoalbum.forms import LoginForm, AddUserForm, PhotoCreateForm
 from django.contrib.auth import login, authenticate, logout
 from django.urls import reverse_lazy
-from .models import User
+from .models import User, Photo
 
 
 class IndexView(View):
@@ -60,4 +60,22 @@ class AddUserView(View):
             login(request, new_user)
             return redirect('index')
         return TemplateResponse(request, 'photoalbum/user_form.html', ctx)
+
+
+class PhotoCreateView(View):
+    template_name = 'photoalbum/photo_form.html'
+
+    def get(self, request):
+        user = User.objects.get(id=request.user.id)
+        form = PhotoCreateForm(initial={'user': user})
+        return TemplateResponse(request, self.template_name, {'form': form})
+
+    def post(self, request):
+        form = PhotoCreateForm(request.POST)
+        ctx = {'form': form}
+        if form.is_valid():
+            form.save()
+            return redirect('index')
+        return TemplateResponse(request, self.template_name, ctx)
+
 

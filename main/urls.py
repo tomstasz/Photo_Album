@@ -24,5 +24,6 @@ urlpatterns = [
     path('login', views.LoginView.as_view(), name='login'),
     path('logout', views.LogoutView.as_view(), name='logout'),
     path('register', views.AddUserView.as_view(), name='register'),
+    path('add_photo', views.PhotoCreateView.as_view(), name='add_photo')
 
 ] + staticfiles_urlpatterns()
