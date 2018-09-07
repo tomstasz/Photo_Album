@@ -1,6 +1,6 @@
 from django import forms
 from django.core.exceptions import ValidationError
-from photoalbum.models import Photo, User
+from .models import Photo, User
 from django.core.validators import EmailValidator
 from .validators import validate_login
 
@@ -20,8 +20,8 @@ class AddUserForm(forms.Form):
             raise ValidationError('Niepoprawne hasło')
 
 
-class PhotoCreateForm(forms.ModelForm):
+class PhotoUploadForm(forms.ModelForm):
     class Meta:
         model = Photo
-        exclude = ['creation_date']
+        fields = forms.ALL_FIELDS
         widgets = {'user': forms.HiddenInput}

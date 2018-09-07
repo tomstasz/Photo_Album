@@ -3,17 +3,19 @@ from django.shortcuts import render, redirect
 # Create your views here.
 from django.template.response import TemplateResponse
 from django.views import View
-from django.views.generic import CreateView
-from photoalbum.forms import LoginForm, AddUserForm, PhotoCreateForm
+from django.views.generic import CreateView, DeleteView
+from photoalbum.forms import LoginForm, AddUserForm, PhotoUploadForm
 from django.contrib.auth import login, authenticate, logout
 from django.urls import reverse_lazy
 from .models import User, Photo
 
 
+
 class IndexView(View):
 
     def get(self, request):
-        return TemplateResponse(request, 'photoalbum/index.html', {'message': 'Witaj świecie'})
+        all_photo = Photo.objects.all()
+        return TemplateResponse(request, 'photoalbum/index.html', {'photos': all_photo})
 
 
 class LoginView(View):
@@ -62,20 +64,27 @@ class AddUserView(View):
         return TemplateResponse(request, 'photoalbum/user_form.html', ctx)
 
 
-class PhotoCreateView(View):
+class PhotoUploadView(View):
     template_name = 'photoalbum/photo_form.html'
 
     def get(self, request):
         user = User.objects.get(id=request.user.id)
-        form = PhotoCreateForm(initial={'user': user})
+        form = PhotoUploadForm(initial={'user': user})
         return TemplateResponse(request, self.template_name, {'form': form})
 
     def post(self, request):
-        form = PhotoCreateForm(request.POST)
+        form = PhotoUploadForm(request.POST, request.FILES)
         ctx = {'form': form}
         if form.is_valid():
             form.save()
             return redirect('index')
         return TemplateResponse(request, self.template_name, ctx)
+
+
+class PhotoDeleteView(DeleteView):
+    model = Photo
+    success_url = reverse_lazy('index')
+
+
 
 
