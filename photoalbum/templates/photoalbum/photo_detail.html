@@ -1,0 +1,8 @@
+{% extends 'photoalbum/base.html' %}
+
+{% block content %}
+  <h3>{{ photo.title }}</h3>
+    <img src="{{ photo.path.url }}">
+{#        <img src="{{ MEDIA_URL }}/{{ photo.path }}">#}
+    <p>{{ photo.user }}</p>
+{% endblock %}

@@ -10,7 +10,6 @@ from django.urls import reverse_lazy
 from .models import User, Photo
 
 
-
 class IndexView(View):
 
     def get(self, request):
@@ -84,6 +83,14 @@ class PhotoUploadView(View):
 class PhotoDeleteView(DeleteView):
     model = Photo
     success_url = reverse_lazy('index')
+
+
+class PhotoDetailView(View):
+
+    def get(self, request, pk):
+        photo = Photo.objects.get(id=pk)
+        ctx = {'photo': photo}
+        return TemplateResponse(request, 'photoalbum/photo_detail.html', ctx)
 
 
 

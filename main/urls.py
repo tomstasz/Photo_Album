@@ -26,6 +26,9 @@ urlpatterns = [
     path('logout', views.LogoutView.as_view(), name='logout'),
     path('register', views.AddUserView.as_view(), name='register'),
     path('add_photo', views.PhotoUploadView.as_view(), name='add_photo'),
-    path('delete_photo/<pk>', views.PhotoDeleteView.as_view(), name='delete_photo')
+    path('delete_photo/<pk>', views.PhotoDeleteView.as_view(), name='delete_photo'),
+    path('photo_detail/<pk>', views.PhotoDetailView.as_view(), name='photo_detail'),
 
-] + staticfiles_urlpatterns() + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] + staticfiles_urlpatterns() + \
+  static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+  # static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

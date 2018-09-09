@@ -6,7 +6,9 @@
         <a href="{% url 'add_photo' %}">Dodaj zdjęcie</a>
     {% endif %}
     {% for photo in photos %}
-        <a href="{% url 'delete_photo' pk=photo.id %}"><img src="{{ MEDIA_URL }}/{{ photo.path }}" alt=""></a>
+        <a href="{% url 'delete_photo' pk=photo.id %}"><img src="{{ photo.path.url }}"></a>
+{#            <a href="{% url 'photo_detail' pk=photo.id %}"><img src="{{ MEDIA_URL }}/{{ photo.path }}"></a>#}
     {% endfor %}
-
 {% endblock %}
+
+{#<a href="{% url 'delete_photo' pk=photo.id %}"><img src="{{ MEDIA_URL }}/{{ photo.path }}|thumbnail_url: '{{ MEDIA_URL }}/{{ photo.path }}' 'thumb'"></a>#}
