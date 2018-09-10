@@ -1,13 +1,8 @@
 {% extends 'photoalbum/base.html' %}
 
 {% block content %}
-    <h3>{{ message }}</h3>
-    {% if request.user.is_authenticated %}
-        <a href="{% url 'add_photo' %}">Dodaj zdjęcie</a>
-    {% endif %}
     {% for photo in photos %}
-        <a href="{% url 'delete_photo' pk=photo.id %}"><img src="{{ photo.path.url }}"></a>
-{#            <a href="{% url 'photo_detail' pk=photo.id %}"><img src="{{ MEDIA_URL }}/{{ photo.path }}"></a>#}
+        <a href="{% url 'photo_detail' pk=photo.id %}"><img src="{{ MEDIA_URL }}/{{ photo.path }}"></a>
     {% endfor %}
 {% endblock %}
 

@@ -3,8 +3,8 @@ from django.shortcuts import render, redirect
 # Create your views here.
 from django.template.response import TemplateResponse
 from django.views import View
-from django.views.generic import CreateView, DeleteView
-from photoalbum.forms import LoginForm, AddUserForm, PhotoUploadForm
+from django.views.generic import CreateView, DeleteView, UpdateView
+from photoalbum.forms import LoginForm, AddUserForm, PhotoUploadForm, PhotoUpdateForm
 from django.contrib.auth import login, authenticate, logout
 from django.urls import reverse_lazy
 from .models import User, Photo
@@ -13,7 +13,7 @@ from .models import User, Photo
 class IndexView(View):
 
     def get(self, request):
-        all_photo = Photo.objects.all()
+        all_photo = Photo.objects.order_by('creation_date')
         return TemplateResponse(request, 'photoalbum/index.html', {'photos': all_photo})
 
 
@@ -82,16 +82,37 @@ class PhotoUploadView(View):
 
 class PhotoDeleteView(DeleteView):
     model = Photo
-    success_url = reverse_lazy('index')
+    success_url = reverse_lazy('profile')
 
 
 class PhotoDetailView(View):
 
     def get(self, request, pk):
-        photo = Photo.objects.get(id=pk)
+        photo = Photo.objects.get(pk=pk)
         ctx = {'photo': photo}
         return TemplateResponse(request, 'photoalbum/photo_detail.html', ctx)
 
 
+class MyProfileView(View):
+
+    def get(self, request):
+        User = request.user
+        photos = User.photo_set.all()
+        return TemplateResponse(request, 'photoalbum/profile.html', {'photos': photos})
 
 
+class PhotoUpdateView(View):
+
+    def get(self, request, pk):
+        photo = Photo.objects.get(id=pk)
+        form = PhotoUpdateForm(instance=photo)
+        return TemplateResponse(request, 'photoalbum/photo_update.html', {'form': form, 'photo': photo})
+
+    def post(self, request, pk):
+        photo = Photo.objects.get(id=pk)
+        form = PhotoUpdateForm(request.POST, request.FILES, instance=photo)
+        ctx = {'form': form}
+        if form.is_valid():
+            form.save()
+            return redirect('profile')
+        return TemplateResponse(request, 'photoalbum/photo_update.html', ctx)

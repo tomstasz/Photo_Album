@@ -25,3 +25,12 @@ class PhotoUploadForm(forms.ModelForm):
         model = Photo
         fields = forms.ALL_FIELDS
         widgets = {'user': forms.HiddenInput}
+
+
+class PhotoUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Photo
+        fields = ['title']
+
+
+

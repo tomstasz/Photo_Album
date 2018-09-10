@@ -28,6 +28,8 @@ urlpatterns = [
     path('add_photo', views.PhotoUploadView.as_view(), name='add_photo'),
     path('delete_photo/<pk>', views.PhotoDeleteView.as_view(), name='delete_photo'),
     path('photo_detail/<pk>', views.PhotoDetailView.as_view(), name='photo_detail'),
+    path('my_profile', views.MyProfileView.as_view(), name='profile'),
+    path('update_photo/<pk>', views.PhotoUpdateView.as_view(), name='update_photo')
 
 ] + staticfiles_urlpatterns() + \
   static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
