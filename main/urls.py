@@ -29,7 +29,8 @@ urlpatterns = [
     path('delete_photo/<pk>', views.PhotoDeleteView.as_view(), name='delete_photo'),
     path('photo_detail/<pk>', views.PhotoDetailView.as_view(), name='photo_detail'),
     path('my_profile', views.MyProfileView.as_view(), name='profile'),
-    path('update_photo/<pk>', views.PhotoUpdateView.as_view(), name='update_photo')
+    path('update_photo/<pk>', views.PhotoUpdateView.as_view(), name='update_photo'),
+    path('reset_password/<id>', views.ResetPasswordView.as_view(), name='reset_password'),
 
 ] + staticfiles_urlpatterns() + \
   static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

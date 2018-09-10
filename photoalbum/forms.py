@@ -33,4 +33,12 @@ class PhotoUpdateForm(forms.ModelForm):
         fields = ['title']
 
 
+class ResetPasswordForm(forms.Form):
+    new_pass = forms.CharField(label='Wprowadź nowe hasło', max_length=64, widget=forms.PasswordInput)
+    new_pass_confirm = forms.CharField(label='Ponownie wprowadź nowe hasło', max_length=64, widget=forms.PasswordInput)
+
+    def clean(self):
+        if self.cleaned_data['new_pass'] != self.cleaned_data['new_pass_confirm']:
+            raise ValidationError('Niepoprawne hasło')
+
 

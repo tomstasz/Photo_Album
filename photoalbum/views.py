@@ -1,10 +1,11 @@
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.shortcuts import render, redirect
 
 # Create your views here.
 from django.template.response import TemplateResponse
 from django.views import View
 from django.views.generic import CreateView, DeleteView, UpdateView
-from photoalbum.forms import LoginForm, AddUserForm, PhotoUploadForm, PhotoUpdateForm
+from photoalbum.forms import LoginForm, AddUserForm, PhotoUploadForm, PhotoUpdateForm, ResetPasswordForm
 from django.contrib.auth import login, authenticate, logout
 from django.urls import reverse_lazy
 from .models import User, Photo
@@ -116,3 +117,27 @@ class PhotoUpdateView(View):
             form.save()
             return redirect('profile')
         return TemplateResponse(request, 'photoalbum/photo_update.html', ctx)
+
+
+class ResetPasswordView(PermissionRequiredMixin, View):
+    permission_required = 'auth.change_user'
+
+    def get(self, request, id):
+        form = ResetPasswordForm()
+        user = User.objects.get(id=id)
+        return TemplateResponse(request, 'photoalbum/reset_password.html', {'form': form, 'user': user})
+
+    def post(self, request, id):
+        form = ResetPasswordForm(request.POST)
+        user = User.objects.get(id=id)
+        ctx = {'form': form, 'user': user}
+        if form.is_valid():
+            new_pass = form.cleaned_data['new_pass']
+            user.set_password(new_pass)
+            user.save()
+            logout(request)
+            ctx.update({'message': "Hasło zostało zmienione, zaloguj się ponownie."})
+
+        else:
+            ctx.update({'message': 'Błędne dane w formularzu'})
+        return TemplateResponse(request, 'photoalbum/reset_password.html', ctx)

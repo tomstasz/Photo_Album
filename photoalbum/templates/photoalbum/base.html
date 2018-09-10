@@ -6,7 +6,7 @@
 </head>
 <body>
 <header>
-    Dzisiaj jest: {{ date|date:'d.m.Y'}}
+    Dzisiaj jest: {{ date|date:'d.m.Y'}} <br>
 
     {% if request.user.is_authenticated %}
         Witaj {{ request.user.username }} <a href="{% url 'logout' %}">Wyloguj</a>
