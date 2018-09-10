@@ -2,8 +2,9 @@
 
 {% block content %}
     {% for photo in photos %}
-        <a href="{% url 'photo_detail' pk=photo.id %}"><img src="{{ MEDIA_URL }}/{{ photo.path }}"></a>
+        {% load thumbnail %}
+            <a href="{% url 'photo_detail' pk=photo.id %}"><img src="{{photo.path|thumbnail_url:'thumb' }}"></a>
     {% endfor %}
 {% endblock %}
 
-{#<a href="{% url 'delete_photo' pk=photo.id %}"><img src="{{ MEDIA_URL }}/{{ photo.path }}|thumbnail_url: '{{ MEDIA_URL }}/{{ photo.path }}' 'thumb'"></a>#}
+
