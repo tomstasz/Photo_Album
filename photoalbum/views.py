@@ -1,4 +1,4 @@
-from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
 from django.shortcuts import render, redirect
 
 # Create your views here.
@@ -81,9 +81,16 @@ class PhotoUploadView(View):
         return TemplateResponse(request, self.template_name, ctx)
 
 
-class PhotoDeleteView(DeleteView):
+class PhotoDeleteView(LoginRequiredMixin, DeleteView):
     model = Photo
     success_url = reverse_lazy('profile')
+
+
+class UserDeleteView(PermissionRequiredMixin, DeleteView):
+    permission_required = 'auth.delete_user'
+    model = User
+    template_name = 'photoalbum/user_confirm_delete.html'
+    success_url = reverse_lazy('index')
 
 
 class PhotoDetailView(View):
