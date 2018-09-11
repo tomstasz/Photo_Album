@@ -11,7 +11,8 @@ from django.urls import reverse_lazy
 from .models import User, Photo
 
 
-class IndexView(View):
+class IndexView(LoginRequiredMixin, View):
+    login_url = 'login'
 
     def get(self, request):
         all_photo = Photo.objects.order_by('creation_date')
@@ -81,7 +82,7 @@ class PhotoUploadView(View):
         return TemplateResponse(request, self.template_name, ctx)
 
 
-class PhotoDeleteView(LoginRequiredMixin, DeleteView):
+class PhotoDeleteView(DeleteView):
     model = Photo
     success_url = reverse_lazy('profile')
 

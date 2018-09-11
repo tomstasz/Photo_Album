@@ -13,7 +13,6 @@
         <a href="{% url 'add_photo' %}">Dodaj zdjęcie</a>
         <a href="{% url 'profile' %}">Mój profil</a>
     {% else %}
-        <a href="{% url 'login' %}">Zaloguj</a>
         <a href="{% url 'register' %}">Zarejestruj się</a>
     {% endif %}
 
@@ -26,7 +25,6 @@
 {% endblock %}
 
 <footer>
-
 </footer>
 </body>
 </html>

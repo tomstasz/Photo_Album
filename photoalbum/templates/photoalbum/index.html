@@ -1,10 +1,16 @@
 {% extends 'photoalbum/base.html' %}
 
 {% block content %}
+    {% if request.user.is_authenticated  %}
     {% for photo in photos %}
         {% load thumbnail %}
-            <a href="{% url 'photo_detail' pk=photo.id %}"><img src="{{photo.path|thumbnail_url:'thumb' }}"></a>
+            <a href="{% url 'photo_detail' pk=photo.id %}"><img src="{{photo.path|thumbnail_url:'thumb' }}"></a><br>
+        <button class="like">Lubię To!</button>
+
+        <p>Liczba polubień: <span class="counter" data-text=" Polubiłeś to zdjęcie">0</span></p><br>
     {% endfor %}
+    {% endif %}
+    <script src="../../static/js/index.js"></script>
 {% endblock %}
 
 
