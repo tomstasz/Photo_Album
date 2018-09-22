@@ -2,7 +2,7 @@
 
 {% block content %}
   <h3>{{ photo.title }}</h3>
-    <p><img src="http://127.0.0.1:8000/{{ photo.path.url }}"></p>
+    <p><img src="{{ photo.path.url }}"></p>
 {#        <img src="{{ MEDIA_URL }}/{{ photo.path }}">#}
     <p><b>Autor:</b> {{ photo.user }}</p>
 

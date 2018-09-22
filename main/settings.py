@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'photoalbum',
-    'easy_thumbnails'
+    'easy_thumbnails',
 ]
 
 MIDDLEWARE = [
@@ -131,7 +131,7 @@ STATIC_URL = '/static/'
 
 # MEDIA_ROOT = os.path.join(BASE_DIR, 'photoalbum/media')
 MEDIA_ROOT = 'photoalbum/media'
-MEDIA_URL = 'media/'
+MEDIA_URL = '/media/'
 
 THUMBNAIL_ALIASES = {
     'photoalbum': {

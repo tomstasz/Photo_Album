@@ -2,13 +2,21 @@
 
 {% block content %}
     {% if request.user.is_authenticated  %}
-    {% for photo in photos %}
-        {% load thumbnail %}
-            <a href="{% url 'photo_detail' pk=photo.id %}"><img src="{{photo.path|thumbnail_url:'thumb' }}"></a><br>
-        <button class="like">Lubię To!</button>
+        <div class="album py-5">
+            <div class="container">
+                <div class="row">
+                    {% for photo in photos %}
+                        <div class="col-md-4">
+                        {% load thumbnail %}
+                            <a href="{% url 'photo_detail' pk=photo.id %}"><img src="{{photo.path|thumbnail_url:'thumb' }}" class="img-fluid"></a><br>
+                        <button class="like">Lubię To!</button>
 
-        <p>Liczba polubień: <span class="counter" data-text=" Polubiłeś to zdjęcie">0</span></p><br>
-    {% endfor %}
+                        <p>Liczba polubień: <span class="counter" data-text=" Polubiłeś to zdjęcie">0</span></p><br>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
     {% endif %}
     <script src="../../static/js/index.js"></script>
 {% endblock %}

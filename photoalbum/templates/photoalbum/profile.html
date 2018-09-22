@@ -1,17 +1,17 @@
 {% extends 'photoalbum/base.html' %}
 
 {% block content %}
-    <h4>Profil {{ request.user }}</h4>
+    <h5>Profil {{ request.user }}</h5><br>
 
-    <h3>Zarządzanie kontem:</h3>
+    <h5>Zarządzanie kontem:</h5>
     <a href="{% url 'reset_password' id=request.user.id %}">Zmień hasło</a>
-    <a href="{% url 'delete_user' pk=request.user.id %}">Usuń konto</a>
-    <h3>Moje zdjęcia:</h3>
+    <a href="{% url 'delete_user' pk=request.user.id %}">Usuń konto</a><br><br>
+    <h2>Moje zdjęcia:</h2>
     {% for photo in photos %}
-        <h2>{{ photo.title }}</h2>
+        <h4>{{ photo.title }}</h4>
         <p><img src="{{ photo.path.url }}"></p>
         <a href="{% url 'delete_photo' pk=photo.id %}">Usuń</a>
-        <a href="{% url 'update_photo' pk=photo.id %}">Edytuj</a>
+        <a href="{% url 'update_photo' pk=photo.id %}">Edytuj</a><br><br>
     {% empty %}
         <p>Brak zdjęć</p>
     {% endfor %}
