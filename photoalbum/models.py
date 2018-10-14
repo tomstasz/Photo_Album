@@ -25,4 +25,6 @@ class Photo(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Użytkownik")
 
 
-
+class Like(models.Model):
+    photo = models.ForeignKey(Photo, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)

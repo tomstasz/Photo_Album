@@ -32,6 +32,7 @@ urlpatterns = [
     path('update_photo/<pk>', views.PhotoUpdateView.as_view(), name='update_photo'),
     path('reset_password/<id>', views.ResetPasswordView.as_view(), name='reset_password'),
     path('delete_user/<pk>', views.UserDeleteView.as_view(), name='delete_user'),
+    path('like_photo', views.like_photo, name='like_photo')
 
 ] + staticfiles_urlpatterns() + \
   static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

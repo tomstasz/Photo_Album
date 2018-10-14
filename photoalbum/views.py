@@ -1,5 +1,7 @@
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
+import json
 
 # Create your views here.
 from django.template.response import TemplateResponse
@@ -8,7 +10,7 @@ from django.views.generic import CreateView, DeleteView, UpdateView
 from photoalbum.forms import LoginForm, AddUserForm, PhotoUploadForm, PhotoUpdateForm, ResetPasswordForm
 from django.contrib.auth import login, authenticate, logout
 from django.urls import reverse_lazy
-from .models import User, Photo
+from .models import User, Photo, Like
 
 
 class IndexView(LoginRequiredMixin, View):
@@ -149,3 +151,16 @@ class ResetPasswordView(PermissionRequiredMixin, View):
         else:
             ctx.update({'message': 'Błędne dane w formularzu'})
         return TemplateResponse(request, 'photoalbum/reset_password.html', ctx)
+
+
+def like_photo(request):
+    if request.method == 'GET':
+        data = json.loads(request.GET['data'])
+        photo_id = data['photo_id']
+        if photo_id:
+            liked_photo = Photo.objects.get(id=photo_id)
+            Like.objects.create(photo=liked_photo)
+            count_p = Like.objects.filter(photo_id=photo_id)
+            User = request.user
+            return HttpResponse(len(count_p))
+        return HttpResponse("Invalid method")
