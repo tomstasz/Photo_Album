@@ -18,7 +18,11 @@ class IndexView(LoginRequiredMixin, View):
 
     def get(self, request):
         all_photo = Photo.objects.order_by('creation_date')
-        return TemplateResponse(request, 'photoalbum/index.html', {'photos': all_photo})
+        likes = Like.objects.all()
+        ctx = {'photos': all_photo,
+               'likes': likes,
+               }
+        return TemplateResponse(request, 'photoalbum/index.html', ctx)
 
 
 class LoginView(View):
@@ -155,12 +159,12 @@ class ResetPasswordView(PermissionRequiredMixin, View):
 
 def like_photo(request):
     if request.method == 'GET':
-        data = json.loads(request.GET['data'])
-        photo_id = data['photo_id']
+        photo_id = request.GET['photo_id']
         if photo_id:
+            user = request.user
             liked_photo = Photo.objects.get(id=photo_id)
-            Like.objects.create(photo=liked_photo)
-            count_p = Like.objects.filter(photo_id=photo_id)
-            User = request.user
-            return HttpResponse(len(count_p))
+            Like.objects.create(photo=liked_photo, user=user)
+            count_likes = Like.objects.filter(photo_id=photo_id)
+
+            return HttpResponse(len(count_likes))
         return HttpResponse("Invalid method")

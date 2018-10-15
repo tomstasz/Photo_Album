@@ -23,7 +23,7 @@ $(function () {
             method: "GET",
             data: {photo_id: $photo_id}
         }).done(function(response){
-            $(event.target).next('p').text(response)
+            $(event.target).siblings('p').children('span').text(response)
         })
     })
 
