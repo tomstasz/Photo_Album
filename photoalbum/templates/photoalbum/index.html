@@ -9,7 +9,7 @@
                         <div class="col-md-4">
                         {% load thumbnail %}
                             <a href="{% url 'photo_detail' pk=photo.id %}"><img src="{{photo.path|thumbnail_url:'thumb' }}" class="img-fluid"></a><br>
-                        <a href="#" class="like_button" data-photo="{{ photo.id }}">Lubię To!</a>
+                        <a href="#" class="like_button" data-photo="{{ photo.id }}">Lubię To!</a><span></span>
                         <p>Liczba polubień:
                             <span>{{ photo.like_set.all|length }}</span>
                         </p>
