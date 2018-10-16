@@ -154,17 +154,15 @@ class ResetPasswordView(PermissionRequiredMixin, View):
             user.save()
             logout(request)
             ctx.update({'message': "Hasło zostało zmienione, zaloguj się ponownie."})
-
         else:
             ctx.update({'message': 'Błędne dane w formularzu'})
         return TemplateResponse(request, 'photoalbum/reset_password.html', ctx)
 
 
 def like_photo(request):
-    if request.method == 'GET':
-        photo_id = request.GET['photo_id']
-        is_liked = request.GET['is_liked']
-        print("is_liked: ", is_liked)
+    if request.method == 'POST':
+        photo_id = request.POST['photo_id']
+        is_liked = request.POST['is_liked']
         liked_photo = Photo.objects.get(id=photo_id)
         if is_liked == 'true':
             like = Like.objects.filter(photo=liked_photo, user=request.user)[0]

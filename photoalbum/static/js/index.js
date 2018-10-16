@@ -1,6 +1,8 @@
 
 $(function () {
     var like_button = $('.like_button');
+    var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+
     like_button.on('click', function (event) {
         var $photo_id = $(this).attr('data-photo');
         var $like_message = $(this).next('span');
@@ -9,8 +11,8 @@ $(function () {
 
         $.ajax({
             url: "/like_photo",
-            method: "GET",
-            data: {photo_id: $photo_id, is_liked: $is_liked},
+            method: "POST",
+            data: {photo_id: $photo_id, is_liked: $is_liked, csrfmiddlewaretoken: csrftoken},
         }).done(function(response){
             response = JSON.parse(response);
             $(event.target).siblings('p').children('span').text(response.count_likes);
