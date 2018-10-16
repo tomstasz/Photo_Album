@@ -1,12 +1,12 @@
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 import json
 
 # Create your views here.
 from django.template.response import TemplateResponse
 from django.views import View
-from django.views.generic import CreateView, DeleteView, UpdateView
+from django.views.generic import DeleteView
 from photoalbum.forms import LoginForm, AddUserForm, PhotoUploadForm, PhotoUpdateForm, ResetPasswordForm
 from django.contrib.auth import login, authenticate, logout
 from django.urls import reverse_lazy
@@ -18,9 +18,12 @@ class IndexView(LoginRequiredMixin, View):
 
     def get(self, request):
         all_photo = Photo.objects.order_by('creation_date')
-        likes = Like.objects.all()
+        likes = Like.objects.filter(user=request.user)
+        likes_list = list()
+        for like in likes:
+            likes_list.append(like.photo_id)
         ctx = {'photos': all_photo,
-               'likes': likes,
+               'likes': likes_list,
                }
         return TemplateResponse(request, 'photoalbum/index.html', ctx)
 
@@ -160,11 +163,18 @@ class ResetPasswordView(PermissionRequiredMixin, View):
 def like_photo(request):
     if request.method == 'GET':
         photo_id = request.GET['photo_id']
-        if photo_id:
-            user = request.user
-            liked_photo = Photo.objects.get(id=photo_id)
-            Like.objects.create(photo=liked_photo, user=user)
-            count_likes = Like.objects.filter(photo_id=photo_id)
+        is_liked = request.GET['is_liked']
+        print("is_liked: ", is_liked)
+        liked_photo = Photo.objects.get(id=photo_id)
+        if is_liked == 'true':
+            like = Like.objects.filter(photo=liked_photo, user=request.user)[0]
+            like.delete()
+        else:
+            Like.objects.create(photo=liked_photo, user=request.user)
+        count_likes = Like.objects.filter(photo_id=photo_id)
+        count_likes = len(count_likes)
+        to_dump = dict()
+        to_dump['count_likes'] = count_likes
 
-            return HttpResponse(len(count_likes))
-        return HttpResponse("Invalid method")
+        return HttpResponse(json.dumps(to_dump))
+    return HttpResponse("Invalid method")

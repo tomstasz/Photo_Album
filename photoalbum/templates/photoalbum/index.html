@@ -9,14 +9,15 @@
                         <div class="col-md-4">
                         {% load thumbnail %}
                             <a href="{% url 'photo_detail' pk=photo.id %}"><img src="{{photo.path|thumbnail_url:'thumb' }}" class="img-fluid"></a><br>
-                        <a href="#" class="like_button" data-photo="{{ photo.id }}">Lubię To!</a><span></span>
+                            <a href="#" class="like_button" data-photo="{{ photo.id }}">Lubię To!</a>
+                            {% if photo.id in likes %}
+                                <span class="like_span liked">Polubiłeś to zdjęcie!</span>
+                            {% else %}
+                                <span class="like_span"></span>
+                            {% endif %}
                         <p>Liczba polubień:
                             <span>{{ photo.like_set.all|length }}</span>
                         </p>
-
-
-
-{#                        <p>Liczba polubień: <span id="counter" data-text=" Polubiłeś to zdjęcie"></span></p><br>#}
                         </div>
                     {% endfor %}
                 </div>
