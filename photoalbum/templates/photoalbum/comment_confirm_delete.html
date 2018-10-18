@@ -3,9 +3,9 @@
 <form action="#" method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    Czy na pewno usunąć komentarz?
+    Czy na pewno usunąć ten komentarz?
     <input type="submit" value="Usuń">
 </form>
 <br>
-<a href="{% url 'profile' %}">Powrót</a>
+<a href="{% url 'photo_detail' pk=comment.photo_id %}">Powrót</a>
 {% endblock %}

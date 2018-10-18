@@ -6,7 +6,7 @@ import json
 # Create your views here.
 from django.template.response import TemplateResponse
 from django.views import View
-from django.views.generic import DeleteView
+from django.views.generic import DeleteView, UpdateView
 from photoalbum.forms import LoginForm, AddUserForm, PhotoUploadForm, PhotoUpdateForm, ResetPasswordForm, AddCommentForm
 from django.contrib.auth import login, authenticate, logout
 from django.urls import reverse_lazy, reverse
@@ -193,6 +193,17 @@ def like_photo(request):
 
 class CommentDeleteView(DeleteView):
     model = Comment
+    pk_url_kwarg = 'pk'
+    success_url = reverse_lazy('photo_detail')
+
+    def get_success_url(self):
+        return reverse('photo_detail', kwargs={'pk': self.object.photo.id})
+
+
+class CommentUpdateView(UpdateView):
+    model = Comment
+    fields = ['content']
+    template_name_suffix = '_update_form'
     pk_url_kwarg = 'pk'
     success_url = reverse_lazy('photo_detail')
 

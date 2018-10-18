@@ -15,6 +15,7 @@
             <br>
         {% if comment.user == request.user %}
                 <a href="{% url 'delete_comment' pk=comment.id %}">Usuń</a>
+                <a href="{% url 'update_comment' pk=comment.id %}">Edytuj</a>
             {% endif %}
         </li>
         <br>

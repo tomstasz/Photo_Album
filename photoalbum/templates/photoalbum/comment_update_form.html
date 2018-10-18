@@ -1,11 +1,12 @@
 {% extends 'photoalbum/base.html' %}
+
 {% block content %}
 <form action="#" method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    Czy na pewno usunąć to zdjęcie?
-    <input type="submit" value="Usuń">
+    <input type="submit" value="zapisz zmiany">
 </form>
-<br>
-<a href="{% url 'profile' %}">Powrót</a>
+    <br>
+    <a href="{% url 'photo_detail' pk=comment.photo_id %}">Powrót</a>
+
 {% endblock %}
