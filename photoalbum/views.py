@@ -2,8 +2,6 @@ from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMix
 from django.http import HttpResponse
 from django.shortcuts import redirect
 import json
-
-# Create your views here.
 from django.template.response import TemplateResponse
 from django.views import View
 from django.views.generic import DeleteView, UpdateView
@@ -11,6 +9,9 @@ from photoalbum.forms import LoginForm, AddUserForm, PhotoUploadForm, PhotoUpdat
 from django.contrib.auth import login, authenticate, logout
 from django.urls import reverse_lazy, reverse
 from .models import User, Photo, Like, Comment
+from django.forms.models import modelform_factory
+from django import forms
+# Create your views here.
 
 
 class IndexView(LoginRequiredMixin, View):
@@ -200,9 +201,15 @@ class CommentDeleteView(DeleteView):
         return reverse('photo_detail', kwargs={'pk': self.object.photo.id})
 
 
-class CommentUpdateView(UpdateView):
+class ModelFormWidgetMixin(object):
+    def get_form_class(self):
+        return modelform_factory(self.model, fields=self.fields, widgets=self.widgets)
+
+
+class CommentUpdateView(ModelFormWidgetMixin, UpdateView):
     model = Comment
     fields = ['content']
+    widgets = {'content': forms.Textarea(attrs={'cols': 40, 'rows': 3})}
     template_name_suffix = '_update_form'
     pk_url_kwarg = 'pk'
     success_url = reverse_lazy('photo_detail')

@@ -1,6 +1,6 @@
 from django import forms
 from django.core.exceptions import ValidationError
-from .models import Photo, User, Comment
+from .models import Photo, Comment
 from django.core.validators import EmailValidator
 from .validators import validate_login
 
