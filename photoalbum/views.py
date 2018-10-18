@@ -107,20 +107,28 @@ class PhotoDetailView(View):
 
     def get(self, request, pk):
         photo = Photo.objects.get(pk=pk)
-        # comments = Comment.objects.filter(photo=photo)
-        comments = photo.comment_set.all()
+        comments = photo.comment_set.order_by('date')
         form = AddCommentForm()
         ctx = {'form': form,
                'photo': photo,
                'comments': comments}
         return TemplateResponse(request, 'photoalbum/photo_detail.html', ctx)
 
+    def post(self, request, pk):
+        form = AddCommentForm(request.POST)
+        ctx = {'form': form}
+        if form.is_valid():
+            comment = form.cleaned_data['content']
+            Comment.objects.create(content=comment, user=request.user, photo_id=pk)
+            return redirect('photo_detail', pk=pk)
+        return TemplateResponse(request, 'photoalbum/photo_detail.html', ctx)
+
 
 class MyProfileView(View):
 
     def get(self, request):
-        User = request.user
-        photos = User.photo_set.all()
+        user = request.user
+        photos = user.photo_set.all()
         return TemplateResponse(request, 'photoalbum/profile.html', {'photos': photos})
 
 

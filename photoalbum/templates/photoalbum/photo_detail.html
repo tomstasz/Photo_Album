@@ -6,19 +6,25 @@
 {#        <img src="{{ MEDIA_URL }}/{{ photo.path }}">#}
     <p><b>Autor:</b> {{ photo.user }}</p>
     <h3>Komentarze:</h3>
-    <ul>
+    <ol>
     {% for comment in comments %}
         <li>
-            <h4>{{ comment.user }} {{ comment.date}}:</h4>
+            <h4>{{ comment.user }}:</h4>
+            <h5>{{ comment.date|date:"d.m.Y H:i"}}</h5>
             {{ comment.content }}
         </li>
+        <br>
     {% endfor %}
-    </ul>
+    </ol>
     <form action="#" method="post">
+    <fieldset>
+        <legend>Podziel się swoją opinią</legend>
     {% csrf_token %}
     {{ form.as_p }}
-    <input type="submit" value="dodaj komentarz">
+    <input type="submit" value="wyślij">
+    </fieldset>
 </form>
+    <br>
 
     <a href="{% url 'index' %}">Powrót</a>
 
