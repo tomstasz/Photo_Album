@@ -18,6 +18,9 @@
                             {% endif %}
                         <p>Liczba polubień:
                             <span>{{ photo.like_set.all|length }}</span>
+                            <br>
+                            Komentarze:
+                            <a>{{ photo.comment_set.all|length }}</a> {# <a> as substitute for <span> works as well #}
                         </p>
                         </div>
                     {% endfor %}

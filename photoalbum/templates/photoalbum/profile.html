@@ -1,11 +1,15 @@
 {% extends 'photoalbum/base.html' %}
 
 {% block content %}
+    <hr>
     <h5>Profil {{ request.user }}</h5><br>
-
-    <h5>Zarządzanie kontem:</h5>
-    <a href="{% url 'reset_password' id=request.user.id %}">Zmień hasło</a>
-    <a href="{% url 'delete_user' pk=request.user.id %}">Usuń konto</a><br><br>
+<fieldset>
+    <label>Zarządzanie kontem:</label>
+    <span> <a href="{% url 'reset_password' id=request.user.id %}">Zmień hasło</a></span>
+    <span><a href="{% url 'delete_user' pk=request.user.id %}">Usuń konto</a></span>
+</fieldset>
+    <br>
+    <hr>
     <h2>Moje zdjęcia:</h2>
     {% for photo in photos %}
         <h4>{{ photo.title }}</h4>
