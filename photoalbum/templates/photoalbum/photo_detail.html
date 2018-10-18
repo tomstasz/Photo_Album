@@ -12,6 +12,10 @@
             <h4>{{ comment.user }}:</h4>
             <h5>{{ comment.date|date:"d.m.Y H:i"}}</h5>
             {{ comment.content }}
+            <br>
+        {% if comment.user == request.user %}
+                <a href="{% url 'delete_comment' pk=comment.id %}">Usuń</a>
+            {% endif %}
         </li>
         <br>
     {% endfor %}

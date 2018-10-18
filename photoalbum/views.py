@@ -9,7 +9,7 @@ from django.views import View
 from django.views.generic import DeleteView
 from photoalbum.forms import LoginForm, AddUserForm, PhotoUploadForm, PhotoUpdateForm, ResetPasswordForm, AddCommentForm
 from django.contrib.auth import login, authenticate, logout
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from .models import User, Photo, Like, Comment
 
 
@@ -189,3 +189,12 @@ def like_photo(request):
 
         return HttpResponse(json.dumps(to_dump))
     return HttpResponse("Invalid method")
+
+
+class CommentDeleteView(DeleteView):
+    model = Comment
+    pk_url_kwarg = 'pk'
+    success_url = reverse_lazy('photo_detail')
+
+    def get_success_url(self):
+        return reverse('photo_detail', kwargs={'pk': self.object.photo.id})
