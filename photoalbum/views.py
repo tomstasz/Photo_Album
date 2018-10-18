@@ -7,10 +7,10 @@ import json
 from django.template.response import TemplateResponse
 from django.views import View
 from django.views.generic import DeleteView
-from photoalbum.forms import LoginForm, AddUserForm, PhotoUploadForm, PhotoUpdateForm, ResetPasswordForm
+from photoalbum.forms import LoginForm, AddUserForm, PhotoUploadForm, PhotoUpdateForm, ResetPasswordForm, AddCommentForm
 from django.contrib.auth import login, authenticate, logout
 from django.urls import reverse_lazy
-from .models import User, Photo, Like
+from .models import User, Photo, Like, Comment
 
 
 class IndexView(LoginRequiredMixin, View):
@@ -107,7 +107,12 @@ class PhotoDetailView(View):
 
     def get(self, request, pk):
         photo = Photo.objects.get(pk=pk)
-        ctx = {'photo': photo}
+        # comments = Comment.objects.filter(photo=photo)
+        comments = photo.comment_set.all()
+        form = AddCommentForm()
+        ctx = {'form': form,
+               'photo': photo,
+               'comments': comments}
         return TemplateResponse(request, 'photoalbum/photo_detail.html', ctx)
 
 

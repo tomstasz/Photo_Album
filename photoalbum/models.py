@@ -28,3 +28,10 @@ class Photo(models.Model):
 class Like(models.Model):
     photo = models.ForeignKey(Photo, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+
+class Comment(models.Model):
+    content = models.TextField(verbose_name="Komentarz")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Użytkownik")
+    date = models.DateTimeField(auto_now_add=True)
+    photo = models.ForeignKey(Photo, on_delete=models.CASCADE, verbose_name="Zdjęcie")

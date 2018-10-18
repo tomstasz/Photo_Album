@@ -1,6 +1,6 @@
 from django import forms
 from django.core.exceptions import ValidationError
-from .models import Photo, User
+from .models import Photo, User, Comment
 from django.core.validators import EmailValidator
 from .validators import validate_login
 
@@ -42,3 +42,7 @@ class ResetPasswordForm(forms.Form):
             raise ValidationError('Niepoprawne hasło')
 
 
+class AddCommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['content']
