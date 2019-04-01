@@ -15,11 +15,21 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='photo',
             name='thumb',
-            field=easy_thumbnails.fields.ThumbnailerImageField(blank=True, max_length=128, null=True, upload_to=photoalbum.models.user_directory, verbose_name='Zdjęcie'),
+            field=easy_thumbnails.fields.ThumbnailerImageField(
+                blank=True,
+                max_length=128,
+                null=True,
+                upload_to=photoalbum.models.user_directory,
+                verbose_name='Zdjęcie'
+            ),
         ),
         migrations.AlterField(
             model_name='photo',
             name='path',
-            field=models.ImageField(max_length=128, upload_to=photoalbum.models.user_directory, verbose_name='Zdjęcie'),
+            field=models.ImageField(
+                max_length=128,
+                upload_to=photoalbum.models.user_directory,
+                verbose_name='Zdjęcie'
+            ),
         ),
     ]

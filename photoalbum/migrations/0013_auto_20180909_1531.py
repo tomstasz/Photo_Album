@@ -14,11 +14,17 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='photo',
             name='title',
-            field=models.CharField(blank=True, max_length=64, null=True, verbose_name='Tytuł'),
+            field=models.CharField(blank=True,
+                                   max_length=64,
+                                   null=True,
+                                   verbose_name='Tytuł'),
         ),
         migrations.AlterField(
             model_name='photo',
             name='path',
-            field=models.ImageField(upload_to=photoalbum.models.user_directory, verbose_name='Zdjęcie'),
+            field=models.ImageField(
+                upload_to=photoalbum.models.user_directory,
+                verbose_name='Zdjęcie'
+            ),
         ),
     ]

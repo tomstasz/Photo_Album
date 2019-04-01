@@ -14,6 +14,8 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='photo',
             name='path',
-            field=models.ImageField(max_length=128, upload_to=photoalbum.models.user_directory, verbose_name='Zdjęcie'),
+            field=models.ImageField(max_length=128,
+                                    upload_to=photoalbum.models.user_directory,
+                                    verbose_name='Zdjęcie'),
         ),
     ]

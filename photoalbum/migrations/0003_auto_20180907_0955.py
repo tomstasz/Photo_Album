@@ -15,11 +15,19 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='photo',
             name='path',
-            field=models.ImageField(height_field=20, max_length=128, upload_to='images', verbose_name='Zdjęcie', width_field=20),
+            field=models.ImageField(height_field=20,
+                                    max_length=128,
+                                    upload_to='images',
+                                    verbose_name='Zdjęcie',
+                                    width_field=20),
         ),
         migrations.AlterField(
             model_name='photo',
             name='user',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL, verbose_name='Uzytkownik'),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                to=settings.AUTH_USER_MODEL,
+                verbose_name='Uzytkownik'
+            ),
         ),
     ]

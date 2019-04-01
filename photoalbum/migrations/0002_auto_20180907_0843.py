@@ -13,6 +13,8 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='photo',
             name='path',
-            field=models.ImageField(max_length=128, upload_to='images', verbose_name='ścieżka'),
+            field=models.ImageField(max_length=128,
+                                    upload_to='images',
+                                    verbose_name='ścieżka'),
         ),
     ]

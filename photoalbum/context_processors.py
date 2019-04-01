@@ -7,4 +7,3 @@ def date_cp(request):
     }
 
     return ctx
-

@@ -19,6 +19,10 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='photo',
             name='path',
-            field=easy_thumbnails.fields.ThumbnailerImageField(max_length=128, upload_to=photoalbum.models.user_directory, verbose_name='Zdjęcie'),
+            field=easy_thumbnails.fields.ThumbnailerImageField(
+                max_length=128,
+                upload_to=photoalbum.models.user_directory,
+                verbose_name='Zdjęcie'
+            ),
         ),
     ]

@@ -14,6 +14,9 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='photo',
             name='path',
-            field=models.ImageField(height_field='250', upload_to=photoalbum.models.user_directory, verbose_name='Zdjęcie', width_field='250'),
+            field=models.ImageField(height_field='250',
+                                    upload_to=photoalbum.models.user_directory,
+                                    verbose_name='Zdjęcie',
+                                    width_field='250'),
         ),
     ]

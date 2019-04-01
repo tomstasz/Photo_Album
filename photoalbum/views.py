@@ -1,17 +1,24 @@
-from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
+import json
+
+from django.contrib.auth.mixins import (PermissionRequiredMixin,
+                                        LoginRequiredMixin)
 from django.http import HttpResponse
 from django.shortcuts import redirect
-import json
 from django.template.response import TemplateResponse
 from django.views import View
 from django.views.generic import DeleteView, UpdateView
-from photoalbum.forms import LoginForm, AddUserForm, PhotoUploadForm, PhotoUpdateForm, ResetPasswordForm, AddCommentForm
 from django.contrib.auth import login, authenticate, logout
 from django.urls import reverse_lazy, reverse
 from .models import User, Photo, Like, Comment
 from django.forms.models import modelform_factory
 from django import forms
-# Create your views here.
+
+from photoalbum.forms import (LoginForm,
+                              AddUserForm,
+                              PhotoUploadForm,
+                              PhotoUpdateForm,
+                              ResetPasswordForm,
+                              AddCommentForm)
 
 
 class IndexView(LoginRequiredMixin, View):
@@ -32,7 +39,9 @@ class IndexView(LoginRequiredMixin, View):
 class LoginView(View):
 
     def get(self, request):
-        return TemplateResponse(request, 'photoalbum/login.html', {'form': LoginForm()})
+        return TemplateResponse(request,
+                                'photoalbum/login.html',
+                                {'form': LoginForm()})
 
     def post(self, request):
         form = LoginForm(request.POST)
@@ -61,7 +70,9 @@ class AddUserView(View):
 
     def get(self, request):
         form = AddUserForm()
-        return TemplateResponse(request, 'photoalbum/user_form.html', {'form': form})
+        return TemplateResponse(request,
+                                'photoalbum/user_form.html',
+                                {'form': form})
 
     def post(self, request):
         form = AddUserForm(request.POST)
@@ -69,7 +80,9 @@ class AddUserView(View):
         if form.is_valid():
             email = form.cleaned_data['login']
             password = form.cleaned_data['password']
-            new_user = User.objects.create_user(username=email, email=email, password=password)
+            new_user = User.objects.create_user(username=email,
+                                                email=email,
+                                                password=password)
             login(request, new_user)
             return redirect('index')
         return TemplateResponse(request, 'photoalbum/user_form.html', ctx)
@@ -120,7 +133,9 @@ class PhotoDetailView(View):
         ctx = {'form': form}
         if form.is_valid():
             comment = form.cleaned_data['content']
-            Comment.objects.create(content=comment, user=request.user, photo_id=pk)
+            Comment.objects.create(content=comment,
+                                   user=request.user,
+                                   photo_id=pk)
             return redirect('photo_detail', pk=pk)
         return TemplateResponse(request, 'photoalbum/photo_detail.html', ctx)
 
@@ -130,7 +145,9 @@ class MyProfileView(View):
     def get(self, request):
         user = request.user
         photos = user.photo_set.all()
-        return TemplateResponse(request, 'photoalbum/profile.html', {'photos': photos})
+        return TemplateResponse(request,
+                                'photoalbum/profile.html',
+                                {'photos': photos})
 
 
 class PhotoUpdateView(View):
@@ -138,7 +155,9 @@ class PhotoUpdateView(View):
     def get(self, request, pk):
         photo = Photo.objects.get(id=pk)
         form = PhotoUpdateForm(instance=photo)
-        return TemplateResponse(request, 'photoalbum/photo_update.html', {'form': form, 'photo': photo})
+        return TemplateResponse(request,
+                                'photoalbum/photo_update.html',
+                                {'form': form, 'photo': photo})
 
     def post(self, request, pk):
         photo = Photo.objects.get(id=pk)
@@ -156,7 +175,9 @@ class ResetPasswordView(PermissionRequiredMixin, View):
     def get(self, request, id):
         form = ResetPasswordForm()
         user = User.objects.get(id=id)
-        return TemplateResponse(request, 'photoalbum/reset_password.html', {'form': form, 'user': user})
+        return TemplateResponse(request,
+                                'photoalbum/reset_password.html',
+                                {'form': form, 'user': user})
 
     def post(self, request, id):
         form = ResetPasswordForm(request.POST)
@@ -167,7 +188,10 @@ class ResetPasswordView(PermissionRequiredMixin, View):
             user.set_password(new_pass)
             user.save()
             logout(request)
-            ctx.update({'message': "Hasło zostało zmienione, zaloguj się ponownie."})
+            ctx.update({'message': """
+            Hasło zostało zmienione, zaloguj się ponownie.
+            """
+                        })
         else:
             ctx.update({'message': 'Błędne dane w formularzu'})
         return TemplateResponse(request, 'photoalbum/reset_password.html', ctx)
@@ -203,7 +227,9 @@ class CommentDeleteView(DeleteView):
 
 class ModelFormWidgetMixin(object):
     def get_form_class(self):
-        return modelform_factory(self.model, fields=self.fields, widgets=self.widgets)
+        return modelform_factory(self.model,
+                                 fields=self.fields,
+                                 widgets=self.widgets)
 
 
 class CommentUpdateView(ModelFormWidgetMixin, UpdateView):
